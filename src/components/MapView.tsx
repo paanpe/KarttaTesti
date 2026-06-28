@@ -1,0 +1,25 @@
+import { MapContainer, TileLayer } from 'react-leaflet';
+import LocationMarker from './LocationMarker';
+import { locations } from '../data/locations';
+
+const DEFAULT_CENTER: [number, number] = [60.17, 24.94];
+const DEFAULT_ZOOM = 13;
+
+export default function MapView() {
+  return (
+    <MapContainer
+      center={DEFAULT_CENTER}
+      zoom={DEFAULT_ZOOM}
+      scrollWheelZoom={true}
+      className="h-full w-full"
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {locations.map((location) => (
+        <LocationMarker key={location.id} location={location} />
+      ))}
+    </MapContainer>
+  );
+}
