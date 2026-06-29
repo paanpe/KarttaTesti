@@ -3,8 +3,8 @@ import LocationMarker from './LocationMarker';
 import LocateControl from './LocateControl';
 import { LocationPoint } from '../types';
 
-const DEFAULT_CENTER: [number, number] = [60.17, 24.94];
-const DEFAULT_ZOOM = 13;
+const DEFAULT_CENTER: [number, number] = [64.5, 26.0];
+const DEFAULT_ZOOM = 5;
 
 interface MapViewProps {
   locations: LocationPoint[];
