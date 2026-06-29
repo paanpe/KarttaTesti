@@ -1,11 +1,16 @@
 import { MapContainer, TileLayer } from 'react-leaflet';
 import LocationMarker from './LocationMarker';
-import { locations } from '../data/locations';
+import LocateControl from './LocateControl';
+import { LocationPoint } from '../types';
 
 const DEFAULT_CENTER: [number, number] = [60.17, 24.94];
 const DEFAULT_ZOOM = 13;
 
-export default function MapView() {
+interface MapViewProps {
+  locations: LocationPoint[];
+}
+
+export default function MapView({ locations }: MapViewProps) {
   return (
     <MapContainer
       center={DEFAULT_CENTER}
@@ -20,6 +25,7 @@ export default function MapView() {
       {locations.map((location) => (
         <LocationMarker key={location.id} location={location} />
       ))}
+      <LocateControl />
     </MapContainer>
   );
 }

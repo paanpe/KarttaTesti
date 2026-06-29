@@ -1,17 +1,51 @@
+import { useState, useMemo } from 'react';
 import MapView from './components/MapView';
+import CategoryFilter from './components/CategoryFilter';
+import { locations } from './data/locations';
 
 export default function App() {
+  const categories = useMemo(
+    () => [...new Set(locations.map((l) => l.category).filter(Boolean))] as string[],
+    [],
+  );
+
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(
+    () => new Set(categories),
+  );
+
+  const toggleCategory = (category: string) => {
+    setActiveCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
+  const filteredLocations = useMemo(
+    () => locations.filter((l) => l.category && activeCategories.has(l.category)),
+    [activeCategories],
+  );
+
   return (
     <div className="h-screen w-screen flex flex-col">
-      <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between shrink-0">
-        <h1 className="text-xl font-bold text-gray-800">KarttaTesti</h1>
-        <p className="text-sm text-gray-500 hidden sm:block">
+      <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 shrink-0">
+        <h1 className="text-xl font-bold text-gray-800 shrink-0">KarttaTesti</h1>
+        <CategoryFilter
+          categories={categories}
+          activeCategories={activeCategories}
+          onToggle={toggleCategory}
+        />
+        <p className="text-sm text-gray-500 hidden sm:block shrink-0 ml-auto">
           Helsingin nähtävyydet
         </p>
       </header>
 
       <main className="flex-1 relative">
-        <MapView />
+        <MapView locations={filteredLocations} />
       </main>
     </div>
   );
